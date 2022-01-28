@@ -13,13 +13,11 @@ class Welcome extends State
         //$this->record->pageNo = 1;
 
         $this->menu->text('CON Welcome To BGF Suggestion Box.')
-            ->lineBreak(2)
-            ->line('Select Department in Query')
-            ->paginateListing(
-                $department
-                , 1, 10, ':')
-            ->lineBreak(1)
-            ->line('0:Exit');
+                   ->lineBreak(2)
+                   ->line('Select Department in Query')
+                   ->paginateListing(
+                        $department
+                        , 1, 10, ':');
     }
 
     protected function afterRendering(string $argument): void

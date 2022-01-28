@@ -8,7 +8,7 @@ class NotStaff extends State
 {
     protected function beforeRendering(): void
     {
-        $this->menu->text('CON This number is not registered to any of our staff.Request assistance from HR');
+        $this->menu->text('END Unregistered number.Request assistance from HR');
     }
 
     protected function afterRendering(string $argument): void

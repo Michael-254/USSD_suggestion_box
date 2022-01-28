@@ -8,7 +8,7 @@ class SavedQuery extends State
 {
     protected function beforeRendering(): void
     {
-        $this->menu->text('END Your question has been saved. We shall revert');
+        $this->menu->text('END Your text has been received. We shall revert');
     }
 
     protected function afterRendering(string $argument): void

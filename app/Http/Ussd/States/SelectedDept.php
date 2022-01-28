@@ -8,10 +8,11 @@ class SelectedDept extends State
 {
     protected function beforeRendering(): void
     {
-        $this->menu->line('1:HOD/Supervisor in Copy of message')
+        $this->menu->text('CON Message respondents.')
+                   ->lineBreak(2)
+                   ->line('1:HOD/Supervisor in Copy of message')
                    ->line('2:Confidential message')
-                   ->line('99:Back')
-                   ->line('0:Exit');
+                   ->line('99:Back');
     }
 
     protected function afterRendering(string $argument): void
