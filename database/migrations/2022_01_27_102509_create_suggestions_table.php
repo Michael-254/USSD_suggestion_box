@@ -18,6 +18,7 @@ class CreateSuggestionsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('department_id')->constrained();
             $table->string('query')->nullable();
+            $table->string('type')->nullable();
             $table->string('response')->nullable();
             $table->boolean('addressed')->default(0);
             $table->timestamps();

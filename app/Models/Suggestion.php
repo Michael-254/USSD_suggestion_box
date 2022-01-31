@@ -13,7 +13,16 @@ class Suggestion extends Model
         'user_id',
         'department_id',
         'query',
+        'type',
         'response',
         'addressed',
     ];
+
+    public function dept(){
+        return $this->belongsTo(Department::class,'department_id');
+    }
+
+    public function initiator(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
