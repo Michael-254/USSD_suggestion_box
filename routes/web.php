@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Department;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +19,15 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return redirect('login');
 });
+
+//Users
+Route::get('/users',[\App\Http\Controllers\DepartmentController::class,'index'])->name('users');
+Route::get('/edit/{id}',[\App\Http\Controllers\DepartmentController::class,'edit'])->name('edit.user');
+Route::patch('/update/{id}',[\App\Http\Controllers\DepartmentController::class,'update'])->name('update.user');
+Route::delete('/destroy/{id}',[\App\Http\Controllers\DepartmentController::class,'destroy'])->name('user.destroy');
+
+//Messages
+Route::get('/messages',[\App\Http\Controllers\ResponseController::class,'messages'])->name('messages');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

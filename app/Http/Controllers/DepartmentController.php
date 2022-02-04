@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DepartmentController extends Controller
 {
@@ -14,7 +16,30 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::query()
+            ->when(request()->input('term'), function ($query, $term) {
+                $query->where('name', 'like', "%{$term}%");
+            })
+            ->when(request()->input('site'), function ($query, $site) {
+                $query->where('site', 'like', "%{$site}%");
+            })
+            ->when(request()->input('dept'), function ($query, $dept) {
+                $query->where('dept', 'like', "%{$dept}%");
+            })
+            ->paginate(10)
+            ->withQueryString()
+            ->through(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'phone_number' => $user->phone_number,
+                'site' => $user->site,
+                'dept' => $user->dept
+            ]);
+
+        return Inertia::render('Users/Index', [
+            'Users' => $users,
+            'filters' => request()->all('dept', 'site', 'term'),
+        ]);
     }
 
     /**
@@ -55,9 +80,12 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit($id)
     {
-        //
+        $user = User::findorFail($id, ['name', 'email', 'id', 'phone_number', 'site', 'dept', 'supervisor_email']);
+        return Inertia::render('Users/Edit', [
+            'User' => $user
+        ]);
     }
 
     /**
@@ -67,9 +95,18 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'name' => ['required'],
+            'phone_number' => ['required', 'unique:users,email,' . $id],
+            'email' => ['required', 'unique:users,email,' . $id],
+            'site' => ['required'],
+            'dept' => ['required'],
+            'supervisor_email' => ['required', 'email'],
+        ]);
+        User::findorFail($id)->update($data);
+        return redirect('users')->withFlash('User Updated successfully');
     }
 
     /**
@@ -78,8 +115,9 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
+    public function destroy($id)
     {
-        //
+        User::findorFail($id)->delete();
+        return back()->withFlash('User deleted');
     }
 }

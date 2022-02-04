@@ -4,10 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Models\Suggestion;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ResponseController extends Controller
 {
+
+    public function messages()
+    {
+        $messages = Suggestion::paginate(10)
+            ->withQueryString()
+            ->through(fn ($sugg) => [
+                'id' => $sugg->id,
+                'user' => $sugg->initiator,
+                'department' => $sugg->dept,
+                'query' => Str::limit($sugg->query,20),
+                'type' => $sugg->type,
+                'response' => Str::limit($sugg->response,20),
+            ]);
+
+      return Inertia::render('Admin/Message', [
+            'Messages' => $messages
+        ]);
+    }
 
     public function sendSMS()
     {
