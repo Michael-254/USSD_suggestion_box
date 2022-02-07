@@ -97,7 +97,6 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->site);
         $data = $request->validate([
             'name' => ['required'],
             'phone_number' => ['required', 'unique:users,phone_number,' . $id],
