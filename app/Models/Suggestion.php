@@ -16,6 +16,7 @@ class Suggestion extends Model
         'type',
         'response',
         'addressed',
+        'access_role'
     ];
 
     public function dept(){

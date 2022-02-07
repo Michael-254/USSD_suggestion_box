@@ -64,6 +64,7 @@
                                                             <option value="Human Resources">Human Resources</option>
                                                             <option value="Operations">Operations</option>
                                                             <option value="Communications">Communications</option>
+                                                            <option value="Finance">Finance</option>
                                                             <option value="ME">Monitoring n Evaluation</option>
                                                         </select>
                                                         <div class="text-xs text-red-600 mt-1" v-if="form.errors.dept">{{ form.errors.dept }}</div>

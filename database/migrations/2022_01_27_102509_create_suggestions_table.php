@@ -21,6 +21,7 @@ class CreateSuggestionsTable extends Migration
             $table->string('type')->nullable();
             $table->string('response')->nullable();
             $table->boolean('addressed')->default(0);
+            $table->string('access_role')->nullable();
             $table->timestamps();
         });
     }

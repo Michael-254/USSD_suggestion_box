@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('site');
             $table->string('dept');
             $table->string('supervisor_email')->nullable();
-            $table->string('office_manager')->nullable();
+            $table->boolean('office_manager')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
