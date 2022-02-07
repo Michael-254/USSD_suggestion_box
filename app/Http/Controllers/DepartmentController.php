@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class DepartmentController extends Controller
@@ -12,7 +13,7 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
@@ -49,7 +50,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Users/Create');
     }
 
     /**
@@ -60,7 +61,25 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => ['required'],
+            'phone_number' => ['required', 'unique:users'],
+            'email' => ['required', 'unique:users'],
+            'site' => ['required'],
+            'dept' => ['required'],
+            'supervisor_email' => ['required', 'email'],
+        ]);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'site' => $data['site'],
+            'dept' => $data['dept'],
+            'phone_number' => $data['phone_number'],
+            'supervisor_email' => $data['supervisor_email'],
+            'password' => Hash::make('123456'),
+        ]);
+
+        return redirect('users')->withFlash('User created successfully');
     }
 
     /**
@@ -78,7 +97,7 @@ class DepartmentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Department  $department
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit($id)
     {

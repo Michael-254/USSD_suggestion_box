@@ -23,6 +23,9 @@
                                     </div>
                                     <div class="border-b border-gray-200 shadow">
                                         <div class="flex justify-between space-x-2 mb-6 px-2 pt-2">
+                                            <Link :href="route('create.user')" class="w-1/5 rounded-lg bg-blue-500 px-2 py-2 h-8 text-white text-center text-xs hover:bg-blue-700">
+                                                New User
+                                            </Link>
                                             <select v-model="site" @change="search()" class="w-full border rounded-lg text-xs border-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-500 ease-in-out focus:ring-opacity-100 focus:border-green-400 focus:ring-green-400">
                                                 <option value="">Site</option>                                           
                                                 <option value="Nyongoro">Nyongoro</option>                                           

@@ -27,7 +27,7 @@
                                             <label for="site" class="text-blue-500 font-serif">Filter by Department</label>
                                             <label for="site" class="text-white">Search Item</label>
                                         </div>
-                                        <div class="flex justify-between space-x-2 mb-6 px-2 pt-1">
+                                        <div class="flex justify-between space-x-1 mb-6 px-2 pt-1">
                                             <select v-model="site" @change="search()" class="w-full border rounded-lg text-xs border-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-500 ease-in-out focus:ring-opacity-100 focus:border-green-400 focus:ring-green-400">
                                                 <option value="">Default</option>                                           
                                                 <option value="Nyongoro">Nyongoro</option>                                           
@@ -125,7 +125,11 @@
 
                                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                         <span
-                                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">{{ message.status }}</span>
+                                                            class="inline-flex px-2 text-xs font-bold leading-5 rounded-full">
+                                                            <Link :href="route('close.message', {id: message.id})" class="text-blue-500 font-serif hover:underline text-blue-800">
+                                                                 {{ message.addressed }}
+                                                            </Link>
+                                                        </span>
                                                     </td>
 
                                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -188,7 +192,7 @@ export default {
    },
    methods: {
         search() {
-            this.$inertia.get('/messages',{term: this.term,site: this.site,dept: this.dept},{preserveState: true, replace: true})
+            this.$inertia.get('/messages',{term: this.term,site: this.site,dept: this.dept,status: this.status},{preserveState: true, replace: true})
             },
    },
    props: {

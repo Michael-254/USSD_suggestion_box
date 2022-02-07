@@ -24,12 +24,15 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['Admin'])->group(function () {
         //Users
         Route::get('/users', [\App\Http\Controllers\DepartmentController::class, 'index'])->name('users');
+        Route::get('/create-user', [\App\Http\Controllers\DepartmentController::class, 'create'])->name('create.user');
+        Route::post('/create-user', [\App\Http\Controllers\DepartmentController::class, 'store']);
         Route::get('/edit-{id}', [\App\Http\Controllers\DepartmentController::class, 'edit'])->name('edit.user');
         Route::patch('/update/{id}', [\App\Http\Controllers\DepartmentController::class, 'update'])->name('update.user');
         Route::delete('/destroy/{id}', [\App\Http\Controllers\DepartmentController::class, 'destroy'])->name('user.destroy');
 
         //Messages
         Route::get('/messages', [\App\Http\Controllers\ResponseController::class, 'messages'])->name('messages');
+        Route::get('/close-messages-{id}', [\App\Http\Controllers\ResponseController::class, 'closeMessage'])->name('close.message');
         Route::get('/view-message-{id}', [\App\Http\Controllers\ResponseController::class, 'viewMsg'])->name('view.message');
         Route::patch('/update-message/{id}', [\App\Http\Controllers\ResponseController::class, 'update'])->name('respond.message');
         Route::get('/upload-users', [\App\Http\Controllers\ResponseController::class, 'UploadUsers'])->name('upload.users');

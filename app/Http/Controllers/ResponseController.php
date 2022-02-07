@@ -17,6 +17,7 @@ class ResponseController extends Controller
     public function messages()
     {
         $messages = Suggestion::query()
+            ->where('addressed', 'open')
             ->when(request()->input('term'), function ($query, $term) {
                 $query->Where('query', 'like', "%{$term}%");
                 $query->orWhere('response', 'like', "%{$term}%");
@@ -50,6 +51,7 @@ class ResponseController extends Controller
                 'department' => $sugg->dept,
                 'query' => Str::limit($sugg->query, 20),
                 'type' => $sugg->type,
+                'addressed' => $sugg->addressed,
                 'response' => Str::limit($sugg->response, 20),
                 'canSee' => [
                     $my_roles = \Arr::flatten(auth()->user()->roles->toArray()),
@@ -76,6 +78,12 @@ class ResponseController extends Controller
         return Inertia::render('Admin/Respond', [
             'Message' => $message,
         ]);
+    }
+
+    public function closeMessage($id)
+    {
+        $message = Suggestion::findOrFail($id)->update(['addressed' => 'closed']);
+        return back()->withFlash('message marked as addressed');
     }
 
     public function update(Request $request, $id)
