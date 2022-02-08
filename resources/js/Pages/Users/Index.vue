@@ -119,7 +119,7 @@
                                                                 Edit
                                                             </Link>
                                                         </td>
-                                                        <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
+                                                        <td v-if="user.id != $page.props.auth.user.id" class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                                                             <button @click.prevent="destroy(`${user.id}`)" class="rounded-lg bg-red-500 px-2 py-2 h-8 text-white text-xs hover:bg-red-700">
                                                                 Delete
                                                             </button>

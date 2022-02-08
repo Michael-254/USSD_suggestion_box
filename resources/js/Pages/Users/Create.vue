@@ -78,7 +78,7 @@
 
                                                     <div class="col-span-6 sm:col-span-3 lg:col-span-3">
                                                         <label for="postal_code" class="block text-sm font-medium text-gray-700">Supervisor Email</label>
-                                                        <input type="text" v-model="form.supervisor_email" class="mt-1 btn-green">
+                                                        <input type="email" v-model="form.supervisor_email" class="mt-1 btn-green">
                                                         <div class="text-xs text-red-600 mt-1" v-if="form.errors.supervisor_email">{{ form.errors.supervisor_email }}</div>
                                                     </div>
                                                     </div>
