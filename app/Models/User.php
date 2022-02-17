@@ -25,6 +25,7 @@ class User extends Authenticatable
         'dept',
         'office_manager',
         'supervisor_email',
+        'country',
         'password',
     ];
 

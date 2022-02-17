@@ -26,6 +26,7 @@ class UsersImport implements ToModel,WithHeadingRow
             'name' => $row['job_title'],
             'email' => $row['email'],
             'phone_number' => $row['phone_number'],
+            'country' => $row['country'],
             'site' => $row['site'],
             'dept' => $row['department'],
             'supervisor_email' => $row['supervisor_email'],
