@@ -31,13 +31,31 @@ class Query extends State
         if ((int)$message_type == 1) {
             $suggestion->update(['type' => 'notify']);
         }
-        $this->sendSMS($user->phone_number);
+        if($user->country == 'Kenya'){
+            $this->sendSMSKenya($user->phone_number);
+        }else{
+            $this->sendSMSUganda($user->phone_number);
+        }
         $this->decision->any(SavedQuery::class);
     }
 
-    protected function sendSMS($phone_number)
+    protected function sendSMSKenya($phone_number)
     {
         $username = 'Better_Globe_Kenya';
+        $apiKey   = 'mikedee';
+        $AT       = new AfricasTalking($username, $apiKey);
+        $sms      = $AT->sms();
+        $result   = $sms->send([
+            'from' => 'BGF',
+            'to'      => $phone_number,
+            'message' => 'Your message has been well received. We shall revert back'
+        ]);
+        Log::info($result);
+    }
+
+    protected function sendSMSUganda($phone_number)
+    {
+        $username = 'Better_Globe_Uganda';
         $apiKey   = 'mikedee';
         $AT       = new AfricasTalking($username, $apiKey);
         $sms      = $AT->sms();

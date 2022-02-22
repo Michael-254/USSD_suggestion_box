@@ -91,16 +91,20 @@ class ResponseController extends Controller
         $data = $request->validate(['response' => 'required']);
         $message = Suggestion::findorFail($id);
         $message->update($data);
-        $username = 'Better_Globe_Kenya';
-        $apiKey   = 'mikedee';
+        if ($message->initiator->country == 'Kenya') {
+            $username = 'Better_Globe_Kenya';
+            $apiKey   = 'mikedee';
+        } else {
+            $username = 'Better_Globe_Uganda';
+            $apiKey   = 'mikedee';
+        }
+
         $AT       = new AfricasTalking($username, $apiKey);
-
         $sms      = $AT->sms();
-
         $result   = $sms->send([
             'from' => 'BGF',
             'to'      => $message->initiator->phone_number,
-            'message' => 'Response given to your query is "' . $request->response .'"',
+            'message' => 'Response given to your query is "' . $request->response . '"',
         ]);
 
         Log::info($result);
