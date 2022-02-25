@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            $notify_hods = Suggestion::where('type', 'notify')->get();
+            $notify_hods = Suggestion::where('type', 'notify')->orWhere('type', 'hod')->get();
             $notify_hods->load('dept', 'initiator');
             foreach ($notify_hods as $notify) {
                 $data = [
@@ -29,7 +29,11 @@ class Kernel extends ConsoleKernel
                     'email' => $notify->dept->HOD_email,
                     'subject'  => 'New Communication for ' . $notify->dept->department . ' Dept'
                 ];
-                Mail::to($data['email'], $notify->initiator->supervisor_email)->send(new CommsMail($data));
+                if ($notify->type == 'notify') {
+                    Mail::to($data['email'], $notify->initiator->supervisor_email)->send(new CommsMail($data));
+                } else {
+                    Mail::to($data['email'])->send(new CommsMail($data));
+                }
                 $notify->update(['type' => 'email sent']);
             }
         })->everyTwoHours();

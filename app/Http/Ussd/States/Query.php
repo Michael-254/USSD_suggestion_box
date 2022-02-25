@@ -30,6 +30,8 @@ class Query extends State
 
         if ((int)$message_type == 1) {
             $suggestion->update(['type' => 'notify']);
+        }else{
+            $suggestion->update(['type' => 'hod']);
         }
         if($user->country == 'Kenya'){
             $this->sendSMSKenya($user->phone_number);
