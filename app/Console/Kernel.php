@@ -30,13 +30,21 @@ class Kernel extends ConsoleKernel
                     'subject'  => 'New Communication for ' . $notify->dept->department . ' Dept'
                 ];
                 if ($notify->type == 'notify') {
-                    Mail::to($data['email'], $notify->initiator->supervisor_email)->send(new CommsMail($data));
+                    $message = Mail::to($data['email'], $notify->initiator->supervisor_email);
+                    if ($notify->access_role == 'CM') {
+                        $message->cc('claudiah@betterglobeforestry.com');
+                    }
+                    $message->send(new CommsMail($data));
                 } else {
-                    Mail::to($data['email'])->send(new CommsMail($data));
+                    $message = Mail::to($data['email']);
+                    if ($notify->access_role == 'CM') {
+                        $message->cc('claudiah@betterglobeforestry.com');
+                    }
+                    $message->send(new CommsMail($data));
                 }
                 $notify->update(['type' => 'email sent']);
             }
-        })->everyTwoHours();
+        })->everyThreeMinutes();
         $schedule->call(function () {
             $put_roles = Suggestion::whereDate('created_at', Carbon::today())->get();
             foreach ($put_roles as $role) {
@@ -46,7 +54,7 @@ class Kernel extends ConsoleKernel
                     $role->update(['access_role' => 'CM']);
                 }
             }
-        })->everyThreeMinutes();
+        })->everyMinute();
     }
 
     /**

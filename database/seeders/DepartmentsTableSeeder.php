@@ -15,7 +15,7 @@ class DepartmentsTableSeeder extends Seeder
     public function run()
     {
         Department::insert([
-            ['department' => 'Communications', 'HOD_email' => 'communications@betterglobeforestry.com'],
+            ['department' => 'Communications', 'HOD_email' => 'claudiah@betterglobeforestry.com'],
             ['department' => 'Finance', 'HOD_email' => 'lawrence@betterglobeforestry.com'],
             ['department' => 'Forestry', 'HOD_email' => 'samuel@betterglobeforestry.com'],
             ['department' => 'Human Resources', 'HOD_email' => 'hr@betterglobeforestry.com'],
@@ -24,7 +24,6 @@ class DepartmentsTableSeeder extends Seeder
             ['department' => 'Monitoring & Evaluation', 'HOD_email' => 'lawrence@betterglobeforestry.com'],
             ['department' => 'Operations', 'HOD_email' => 'lawrence@betterglobeforestry.com'],
             ['department' => 'QMS', 'HOD_email' => 'lawrence@betterglobeforestry.com'],
-            ['department' => 'Top Management', 'HOD_email' => 'jpd@betterglobeforestry.com'],
         ]);
     }
 }
