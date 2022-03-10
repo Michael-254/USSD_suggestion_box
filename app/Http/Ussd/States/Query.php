@@ -21,22 +21,24 @@ class Query extends State
 
     protected function afterRendering(string $argument): void
     {
-        $phone = Session::get('phone_number');
-        $dept = $this->record->get('dept');
-        $message_type = $this->record->get('messageType');
-        $department = Department::skip($dept - 1)->first();
-        $user = User::wherePhoneNumber($phone)->first();
-        $suggestion = Suggestion::create(['user_id' => $user->id, 'department_id' => $department->id, 'query' => $argument]);
+        if ($argument != '') {
+            $phone = Session::get('phone_number');
+            $dept = $this->record->get('dept');
+            $message_type = $this->record->get('messageType');
+            $department = Department::skip($dept - 1)->first();
+            $user = User::wherePhoneNumber($phone)->first();
+            $suggestion = Suggestion::create(['user_id' => $user->id, 'department_id' => $department->id, 'query' => $argument]);
 
-        if ((int)$message_type == 1) {
-            $suggestion->update(['type' => 'notify']);
-        }else{
-            $suggestion->update(['type' => 'hod']);
-        }
-        if($user->country == 'Kenya'){
-            $this->sendSMSKenya($user->phone_number);
-        }else{
-            $this->sendSMSUganda($user->phone_number);
+            if ((int)$message_type == 1) {
+                $suggestion->update(['type' => 'notify']);
+            } else {
+                $suggestion->update(['type' => 'hod']);
+            }
+            if ($user->country == 'Kenya') {
+                $this->sendSMSKenya($user->phone_number);
+            } else {
+                $this->sendSMSUganda($user->phone_number);
+            }
         }
         $this->decision->any(SavedQuery::class);
     }

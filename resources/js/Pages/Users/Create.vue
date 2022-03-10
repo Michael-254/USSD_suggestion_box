@@ -116,6 +116,7 @@ export default {
      Button,
      Link,
    },
+   remember: ['form'],
    data() {
     return {
       form: this.$inertia.form({

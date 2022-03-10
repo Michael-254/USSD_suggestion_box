@@ -20152,6 +20152,7 @@ __webpack_require__.r(__webpack_exports__);
     Button: _Components_Button_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link
   },
+  remember: ['form'],
   data: function data() {
     return {
       form: this.$inertia.form({
