@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/Ussd', [App\Http\Controllers\UssdController::class, 'index']);
 Route::get('/sendSMS', [App\Http\Controllers\UssdController::class, 'sendSMS']);
+
+Route::post('/Two-Way-SMS', [\App\Http\Controllers\TwoWaySMS::class, 'index']);

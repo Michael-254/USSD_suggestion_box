@@ -107,7 +107,7 @@ class ResponseController extends Controller
             'message' => 'Response given to your query is "' . $request->response . '"',
         ]);
 
-        Log::info($result);
+        //Log::info($result);
         return back()->withFlash('Respose updated');
     }
 
