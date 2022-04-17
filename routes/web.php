@@ -20,6 +20,11 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+Route::get('/test', function () {
+    return Department::pluck('id')->toArray();
+
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['Admin'])->group(function () {
         //Users

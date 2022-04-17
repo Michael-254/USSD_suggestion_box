@@ -37,7 +37,7 @@ class TwoWaySMS extends Controller
             $progress = SMSProgress::where('user_id', $find_user->id)->first();
             if ($progress) {
                 if ($progress->progress == 1) {
-                    $depts = \Arr::flatten(Department::select('id')->get()->toArray());
+                    $depts = Department::pluck('id')->toArray();
                     if (in_array((int)$incoming_text, $depts)) {
                         $this->sendType($find_user, $incoming_text);
                     } else {
@@ -99,7 +99,7 @@ class TwoWaySMS extends Controller
 
     public function WrongSelection($user)
     {
-        $message = 'Wrong selection please try again';
+        $message = 'Invalid choice please try again';
         $this->SendSMS($message, $user->phone_number);
     }
 }
