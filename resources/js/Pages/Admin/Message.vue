@@ -74,7 +74,9 @@
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
                                                             Status</th>
-                                                        
+                                                        <th
+                                                            class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
+                                                            Email Status</th>
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
                                                             Department in Query</th>
@@ -131,6 +133,11 @@
                                                                     {{ message.addressed }}
                                                                 </Link>
                                                             </span>
+                                                        </td>
+
+                                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                            <span
+                                                                class="inline-flex px-2 text-xs text-blue-600 font-semibold font-serif leading-5  rounded-full">{{ message.type }}</span>
                                                         </td>
 
                                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">

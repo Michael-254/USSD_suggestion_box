@@ -34,11 +34,7 @@ class Query extends State
             } else {
                 $suggestion->update(['type' => 'hod']);
             }
-            if ($user->country == 'Kenya') {
-                $this->sendSMSKenya($user->phone_number);
-            } else {
-                $this->sendSMSUganda($user->phone_number);
-            }
+            $this->sendSMSKenya($user->phone_number);
         }
         $this->decision->any(SavedQuery::class);
     }
@@ -54,20 +50,7 @@ class Query extends State
             'to'      => $phone_number,
             'message' => 'Your message has been well received. We shall revert back'
         ]);
-        Log::info($result);
+        //Log::info($result);
     }
 
-    protected function sendSMSUganda($phone_number)
-    {
-        $username = 'Better_Globe_Uganda';
-        $apiKey   = 'mikedee';
-        $AT       = new AfricasTalking($username, $apiKey);
-        $sms      = $AT->sms();
-        $result   = $sms->send([
-            'from' => 'BGF',
-            'to'      => $phone_number,
-            'message' => 'Your message has been well received. We shall revert back'
-        ]);
-        Log::info($result);
-    }
 }

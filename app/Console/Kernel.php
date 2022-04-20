@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Mail\CommsMail;
+use App\Models\SMSProgress;
 use App\Models\Suggestion;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -55,6 +56,24 @@ class Kernel extends ConsoleKernel
                 }
             }
         })->everyMinute();
+        $schedule->call(function () {
+            $sms = SMSProgress::where('progress', 4)->get();
+            foreach ($sms as $sm) {
+                $suggestion = Suggestion::create([
+                    'user_id' => $sm->user_id, 'department_id' => $sm->department_id,
+                    'query' => $sm->query
+                ]);
+                if ($sm->type == 1) {
+                    $suggestion->update(['type' => 'notify']);
+                } else {
+                    $suggestion->update(['type' => 'hod']);
+                }
+                $sm->delete();
+            }
+        })->everyMinute();
+        $schedule->call(function () {
+            $sms = SMSProgress::where('created_at', '<', Carbon::now()->subDays(1)->toDateString())->delete();
+        })->daily();
     }
 
     /**

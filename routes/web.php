@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Department;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,11 +17,6 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return redirect('login');
-});
-
-Route::get('/test', function () {
-    return Department::pluck('id')->toArray();
-
 });
 
 Route::middleware(['auth'])->group(function () {
