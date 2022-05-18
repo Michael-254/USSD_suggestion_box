@@ -11,56 +11,77 @@ use Illuminate\Support\Facades\Log;
 
 class TwoWaySMS extends Controller
 {
-    public function SendSMS($message, $phone_number)
+    public function SendSMS($message, $phone_number, $country)
     {
-        $username = 'sandbox';
-        $apiKey   = '2043ed93bab94f0d7efb07b3895a1d1e1a697198806310a61b1caf05b35dfe02';
-        $AT       = new AfricasTalking($username, $apiKey);
-        $sms      = $AT->sms();
-        $result   = $sms->send([
-            'from' => '39980',
-            'to'      => $phone_number,
-            'message' => $message,
-        ]);
+        if ($country == 'Kenya') {
+            $username = 'sandbox';
+            $apiKey   = '';
+            $AT       = new AfricasTalking($username, $apiKey);
+            $sms      = $AT->sms();
+            $result   = $sms->send([
+                'from' => '39980',
+                'to'      => $phone_number,
+                'message' => $message,
+            ]);
+        } else {
+            $username = 'sandbox';
+            $apiKey   = '';
+            $AT       = new AfricasTalking($username, $apiKey);
+            $sms      = $AT->sms();
+            $result   = $sms->send([
+                'from' => '39980',
+                'to'      => $phone_number,
+                'message' => $message,
+            ]);
+        }
     }
 
     public function index(Request $request)
     {
         $incoming_text = $request['text'];
         $phone_number = $request['from'];
+        $k = $phone_number;
+        $a = substr($k, 0, 3);
+        if ($a == '254') {
+            $country = 'Kenya';
+        } else {
+            $country = 'Uganda';
+        }
+
 
         $find_user = User::where('phone_number', $phone_number)->first();
+
         if (!$find_user) {
             $message = 'Sorry We are unable find this number on our database.Kindly contact HR for assistance';
-            $this->SendSMS($message, $phone_number);
+            $this->SendSMS($message, $phone_number, $country);
         } else {
             $progress = SMSProgress::where('user_id', $find_user->id)->first();
             if ($progress) {
                 if ($progress->progress == 1) {
                     $depts = Department::pluck('id')->toArray();
                     if (in_array((int)$incoming_text, $depts)) {
-                        $this->sendType($find_user, $incoming_text);
+                        $this->sendType($find_user, $incoming_text, $country);
                     } else {
-                        $this->WrongSelection($find_user);
+                        $this->WrongSelection($find_user, $country);
                     };
                 } elseif ($progress->progress == 2) {
                     $array = [1, 2];
                     if (in_array((int)$incoming_text, $array)) {
-                        $this->TypeQuery($find_user, $incoming_text);
+                        $this->TypeQuery($find_user, $incoming_text, $country);
                     } else {
-                        $this->WrongSelection($find_user);
+                        $this->WrongSelection($find_user, $country);
                     };
                 } elseif ($progress->progress == 3) {
                     SMSProgress::where('user_id', $find_user->id)->first()->update(['progress' => '4', 'query' => $incoming_text]);
-                    $this->EndIt($find_user);
+                    $this->EndIt($find_user, $country);
                 }
             } else {
-                $this->SelectDept($find_user);
+                $this->SelectDept($find_user, $country);
             }
         }
     }
 
-    public function SelectDept($user)
+    public function SelectDept($user, $country)
     {
         $array = [];
         $depts = Department::select('id', 'department')->get();
@@ -73,33 +94,33 @@ class TwoWaySMS extends Controller
         });
         $message = "Welcome to BGF suggestion box. Please select department in query\n" .
             implode("\n ", $flattened);
-        $this->SendSMS($message, $user->phone_number);
+        $this->SendSMS($message, $user->phone_number, $country);
         SMSProgress::create(['user_id' => $user->id, 'progress' => '1']);
     }
 
-    public function sendType($user, $incoming_text)
+    public function sendType($user, $incoming_text, $country)
     {
         $message = "1: Do you want HOD in Copy\n 2: Confidential Message";
-        $this->SendSMS($message, $user->phone_number);
+        $this->SendSMS($message, $user->phone_number, $country);
         SMSProgress::where('user_id', $user->id)->first()->update(['progress' => '2', 'department_id' => $incoming_text]);
     }
 
-    public function TypeQuery($user, $incoming_text)
+    public function TypeQuery($user, $incoming_text, $country)
     {
         $message = 'Type your Message';
-        $this->SendSMS($message, $user->phone_number);
+        $this->SendSMS($message, $user->phone_number, $country);
         SMSProgress::where('user_id', $user->id)->first()->update(['progress' => '3', 'type' => $incoming_text]);
     }
 
-    public function EndIt($user)
+    public function EndIt($user, $country)
     {
         $message = 'Your message has been well received. We shall revert back';
-        $this->SendSMS($message, $user->phone_number);
+        $this->SendSMS($message, $user->phone_number, $country);
     }
 
-    public function WrongSelection($user)
+    public function WrongSelection($user, $country)
     {
         $message = 'Invalid choice please try again';
-        $this->SendSMS($message, $user->phone_number);
+        $this->SendSMS($message, $user->phone_number, $country);
     }
 }
