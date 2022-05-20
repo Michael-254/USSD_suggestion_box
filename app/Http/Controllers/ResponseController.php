@@ -47,6 +47,7 @@ class ResponseController extends Controller
             ->withQueryString()
             ->through(fn ($sugg) => [
                 'id' => $sugg->id,
+                'date' => $sugg->created_at->format('d/m/Y'),
                 'user' => $sugg->initiator,
                 'department' => $sugg->dept,
                 'query' => Str::limit($sugg->query, 20),

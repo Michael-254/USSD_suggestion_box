@@ -60,6 +60,9 @@
                                                             ID</th>
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
+                                                            Date Received</th>
+                                                        <th
+                                                            class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
                                                             Job Title</th>
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
@@ -76,6 +79,9 @@
                                                             Status</th>
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
+                                                            View</th>
+                                                        <th
+                                                            class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
                                                             Email Status</th>
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
@@ -87,11 +93,7 @@
 
                                                         <th
                                                             class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
-                                                            Response Snip</th>
-
-                                                        <th
-                                                            class="px-6 py-3 text-xs text-green-600 font-bold leading-4 tracking-wider text-left uppercase border-b border-gray-200 bg-gray-50">
-                                                            View</th>
+                                                            Response Snip</th>                              
                                                     </tr>
                                                 </thead>
 
@@ -102,6 +104,16 @@
                                                                 <div class="ml-4">
                                                                     <div class="text-sm font-medium leading-5 text-gray-900">
                                                                         {{ message.id }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                            <div class="flex items-center">
+                                                                <div class="ml-4">
+                                                                    <div class="text-sm font-medium leading-5 text-gray-900">
+                                                                        {{ message.date }}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -129,10 +141,16 @@
                                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                             <span
                                                                 class="inline-flex px-2 text-xs font-bold leading-5 rounded-full">
-                                                                <Link :href="route('close.message', {id: message.id})" class="text-blue-500 font-serif hover:underline text-blue-800">
+                                                                <Link :href="route('close.message', {id: message.id})" class="text-blue-500 font-serif hover:underline hover:text-blue-800">
                                                                     {{ message.addressed }}
                                                                 </Link>
                                                             </span>
+                                                        </td>
+
+                                                        <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
+                                                            <Link :href="route('view.message', {id: message.id})" class="rounded-lg bg-indigo-500 px-2 py-2 h-8 text-white text-xs hover:bg-indigo-700">
+                                                                View
+                                                            </Link>
                                                         </td>
 
                                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -155,11 +173,6 @@
                                                                 class="inline-flex px-2 text-xs font-semibold leading-5">{{ message.response }}</span>
                                                         </td>
                                                         
-                                                        <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-                                                            <Link :href="route('view.message', {id: message.id})" class="rounded-lg bg-indigo-500 px-2 py-2 h-8 text-white text-xs hover:bg-indigo-700">
-                                                                View
-                                                            </Link>
-                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

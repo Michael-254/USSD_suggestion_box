@@ -15,7 +15,7 @@ class TwoWaySMS extends Controller
     {
         if ($country == 'Kenya') {
             $username = 'sandbox';
-            $apiKey   = '';
+            $apiKey   = '2043ed93bab94f0d7efb07b3895a1d1e1a697198806310a61b1caf05b35dfe02';
             $AT       = new AfricasTalking($username, $apiKey);
             $sms      = $AT->sms();
             $result   = $sms->send([
@@ -25,7 +25,7 @@ class TwoWaySMS extends Controller
             ]);
         } else {
             $username = 'sandbox';
-            $apiKey   = '';
+            $apiKey   = '2043ed93bab94f0d7efb07b3895a1d1e1a697198806310a61b1caf05b35dfe02';
             $AT       = new AfricasTalking($username, $apiKey);
             $sms      = $AT->sms();
             $result   = $sms->send([
