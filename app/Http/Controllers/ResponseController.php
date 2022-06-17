@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
 use App\Imports\UsersImport;
 use App\Models\Suggestion;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -16,10 +17,12 @@ class ResponseController extends Controller
 
     public function messages()
     {
+        $startDate = Carbon::parse(request()->input('startDate'))->format('Y-m-d h:i:s');
+        $endDate = Carbon::parse(request()->input('endDate'))->format('Y-m-d h:i:s');
         $messages = Suggestion::query()
-            ->where('addressed', 'open')
             ->when(request()->input('term'), function ($query, $term) {
                 $query->Where('query', 'like', "%{$term}%");
+                $query->where('addressed', 'open');
                 $query->orWhere('response', 'like', "%{$term}%");
                 $query->orWhereHas('initiator', function ($query) use ($term) {
                     $query->where('name', 'like', "%{$term}%");
@@ -34,6 +37,9 @@ class ResponseController extends Controller
                     $query->Where('site', 'like', "%{$site}%");
                 });
             })
+            ->when(request()->input('endDate'), function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            })
             ->when(request()->input('dept'), function ($query, $dept) {
                 $query->WhereHas('initiator', function ($query) use ($dept) {
                     $query->Where('dept', 'like', "%{$dept}%");
@@ -42,6 +48,7 @@ class ResponseController extends Controller
                     $query->Where('department', 'like', "%{$dept}%");
                 });
             })
+            ->where('addressed', 'open')
             ->latest()
             ->paginate(10)
             ->withQueryString()
@@ -63,7 +70,7 @@ class ResponseController extends Controller
 
         return Inertia::render('Admin/Message', [
             'Messages' => $messages,
-            'filters' => request()->all('dept', 'site', 'term'),
+            'filters' => request()->all('dept', 'site', 'term', 'startDate', 'endDate'),
         ]);
     }
 
